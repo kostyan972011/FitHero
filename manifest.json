@@ -1,0 +1,17 @@
+{
+  "name": "FitHero Тренировки",
+  "short_name": "FitHero",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f0c29",
+  "theme_color": "#0f0c29",
+  "description": "Персональный тренер для подтягиваний, отжиманий, пресса и бега",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
