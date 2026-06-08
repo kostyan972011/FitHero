@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FitHero">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json?v=6">
+    <title>FitHero</title>
+    <link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ЭКРАН 1: Регистрация -->
+        <div id="onboarding-screen" class="screen hidden">
+            <div class="glass-card">
+                <h1 class="app-title">FitHero</h1>
+                <p class="subtitle">Твой персональный тренер</p>
+                <form id="registration-form">
+                    <div class="input-group">
+                        <label for="userName">Как к тебе обращаться?</label>
+                        <input type="text" id="userName" placeholder="Введи свое имя" required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Укажи свой пол</label>
+                        <div class="gender-selector">
+                            <label class="radio-glass"><input type="radio" name="gender" value="male" required><span class="radio-text">Мужской</span></label>
+                            <label class="radio-glass"><input type="radio" name="gender" value="female"><span class="radio-text">Женский</span></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Начать путь</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 2: Выбор уровня -->
+        <div id="welcome-screen" class="screen hidden">
+            <div class="glass-card">
+                <h2 id="greeting-text">Привет, Герой!</h2>
+                <p class="subtitle">Выбери свой текущий уровень сложности</p>
+                <div class="level-selector">
+                    <button class="btn-level" onclick="selectLevel(1)"><span class="level-name">Уровень 1</span><span class="level-desc">Новичок</span></button>
+                    <button class="btn-level" onclick="selectLevel(2)"><span class="level-name">Уровень 2</span><span class="level-desc">Любитель</span></button>
+                    <button class="btn-level" onclick="selectLevel(3)"><span class="level-name">Уровень 3</span><span class="level-desc">Профи</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 3: Главное меню -->
+        <div id="dashboard-screen" class="screen hidden">
+            <header class="dashboard-header">
+                <div>
+                    <h2 id="dashboard-greeting">Привет!</h2>
+                    <div class="level-badge" id="current-level-badge">Уровень: Новичок</div>
+                </div>
+                <button class="btn-icon" onclick="goToLevelSelect()" title="Сменить уровень">⚙️</button>
+            </header>
+            <div class="workout-grid">
+                <div class="workout-card featured" onclick="openWorkout('complex')"><div class="card-icon">🔥</div><h3>Комплексная</h3><p>Собери свою тренировку</p></div>
+                <div class="workout-card" onclick="openWorkout('pullups')"><div class="card-icon">🏋️‍♂️</div><h3>Подтягивания</h3></div>
+                <div class="workout-card" onclick="openWorkout('running')"><div class="card-icon">🏃</div><h3>Бег</h3></div>
+                <div class="workout-card" onclick="openWorkout('pushups')"><div class="card-icon">💪</div><h3>Отжимания</h3></div>
+                <div class="workout-card" onclick="openWorkout('abs')"><div class="card-icon">🧱</div><h3>Пресс</h3></div>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 4: Календарь -->
+        <div id="calendar-screen" class="screen hidden">
+            <header class="dashboard-header"><h2>Календарь</h2></header>
+            <div class="glass-card calendar-card">
+                <h3 id="calendar-month-year" class="calendar-title">Месяц</h3>
+                <div class="calendar-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+                <div class="calendar-legend">
+                    <div class="legend-item"><div class="legend-dot trained"></div><span>Тренировка была</span></div>
+                    <div class="legend-item"><div class="legend-dot today"></div><span>Сегодня</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 5: Достижения -->
+        <div id="achievements-screen" class="screen hidden">
+            <header class="dashboard-header"><h2>Достижения</h2></header>
+            <div class="glass-card" id="achievements-list"></div>
+        </div>
+
+        <!-- ЭКРАН 6: Настройка комплексной тренировки -->
+        <div id="complex-setup-screen" class="screen hidden">
+            <header class="workout-header">
+                <button class="btn-back" onclick="switchTab('dashboard')">← Назад</button>
+                <h2>Конструктор</h2>
+            </header>
+            <p class="subtitle" style="text-align: left; margin-bottom: 20px;">Отметь, что включить в тренировку:</p>
+            <div class="checkbox-list">
+                <label class="checkbox-glass"><input type="checkbox" name="complex-type" value="pullups"><div class="checkbox-content"><span class="cb-icon">🏋️‍♂️</span><div class="cb-text"><strong>Подтягивания</strong><span>4 упражнения</span></div></div></label>
+                <label class="checkbox-glass"><input type="checkbox" name="complex-type" value="pushups"><div class="checkbox-content"><span class="cb-icon">💪</span><div class="cb-text"><strong>Отжимания</strong><span>4 упражнения</span></div></div></label>
+                <label class="checkbox-glass"><input type="checkbox" name="complex-type" value="abs"><div class="checkbox-content"><span class="cb-icon">🧱</span><div class="cb-text"><strong>Пресс</strong><span>9 упражнений (по 3 подхода)</span></div></div></label>
+                <label class="checkbox-glass"><input type="checkbox" name="complex-type" value="running"><div class="checkbox-content"><span class="cb-icon">🏃</span><div class="cb-text"><strong>Бег</strong><span id="complex-run-dist">Дистанция по уровню</span></div></div></label>
+            </div>
+            <div class="action-buttons" style="margin-top: 32px;">
+                <button class="btn-primary" id="btn-start-complex" onclick="startComplexWorkout()" disabled>Начать тренировку 🚀</button>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 7: Универсальный экран активной тренировки -->
+        <div id="workout-screen" class="screen hidden">
+            <header class="workout-header">
+                <button class="btn-back" onclick="exitWorkout()">← Назад</button>
+                <h2 id="workout-title">Тренировка</h2>
+                <button class="btn-icon" id="music-toggle-btn" onclick="toggleMusic()" title="Включить музыку">🎵</button>
+            </header>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="workout-progress"></div>
+                <span class="progress-text" id="workout-progress-text">1 / 4</span>
+            </div>
+            <div class="glass-card exercise-card">
+                <!-- МЕСТО ДЛЯ GIF -->
+                <img id="exercise-gif" class="exercise-gif" src="" alt="Демонстрация упражнения">
+                
+                <div class="exercise-header">
+                    <h3 id="exercise-name">Загрузка...</h3>
+                    <div class="reps-badge" id="exercise-reps">0 раз</div>
+                </div>
+                <p class="exercise-desc" id="exercise-desc">Описание упражнения</p>
+                <div class="rest-info" id="rest-info-block">
+                    <span>⏱ Отдых после подхода:</span>
+                    <strong id="rest-time-display">0 мин</strong>
+                </div>
+            </div>
+            <div id="rest-timer-block" class="glass-card timer-card hidden">
+                <h3>Время отдыха</h3>
+                <div class="timer-display" id="rest-timer-display">00:00</div>
+                <button class="btn-secondary" onclick="skipRest()">Пропустить отдых</button>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-primary" id="btn-complete-set" onclick="completeSet()">Выполнено ✅</button>
+            </div>
+        </div>
+
+        <!-- ЭКРАН 8: Тренировка "Бег" -->
+        <div id="running-screen" class="screen hidden">
+            <header class="workout-header">
+                <button class="btn-back" onclick="exitWorkout()">← Назад</button>
+                <h2>Бег</h2>
+                <button class="btn-icon" id="music-toggle-btn-running" onclick="toggleMusic()" title="Включить музыку">🎵</button>
+            </header>
+            <div class="glass-card running-card">
+                <div class="running-target">
+                    <span>Целевая дистанция</span>
+                    <h3 id="running-distance-target">1 км</h3>
+                </div>
+                <div class="stopwatch-container">
+                    <div class="stopwatch-display" id="stopwatch-display">00:00:00</div>
+                    <p class="stopwatch-hint">Время вашей пробежки</p>
+                </div>
+                <div class="running-actions">
+                    <button class="btn-running" id="btn-running-toggle" onclick="toggleRunningTimer()">▶ Старт</button>
+                    <button class="btn-secondary" id="btn-running-finish" onclick="finishRunning()" disabled>Я пробежал эту дистанцию 🏁</button>
+                </div>
+            </div>
+            <p class="running-note">⚠️ Из-за ограничений iOS веб-приложения не имеют доступа к шагомеру. Пожалуйста, используйте внешние часы или ориентируйтесь на свои ощущения, а затем нажмите кнопку завершения.</p>
+        </div>
+    </div>
+
+    <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
+    <nav class="bottom-nav" id="main-nav">
+        <button class="nav-item active" onclick="switchTab('dashboard')"><span class="nav-icon">🏠</span><span class="nav-text">Тренировки</span></button>
+        <button class="nav-item" onclick="switchTab('calendar')"><span class="nav-icon">📅</span><span class="nav-text">Календарь</span></button>
+        <button class="nav-item" onclick="switchTab('achievements')"><span class="nav-icon">🏆</span><span class="nav-text">Достижения</span></button>
+    </nav>
+
+    <script src="main.js?v=6"></script>
+</body>
+</html>
